@@ -1,0 +1,15 @@
+- name:
+  stat:
+    path: /user/bin/unzip
+  register: unzip_stats
+  tags: &tags_for_bun_tasks ["install", "productivity", "dotfiles", "bun"]
+
+- name: Install Unzip
+  apt: name=unzip
+  tags: *tags_for_bun_tasks
+  when: unzip_stats.stat.exists == False
+  become: true
+
+- name: Install Bun
+  shell: curl -fsSL https://bun.sh/install | bash
+  tags: *tags_for_bun_tasks
