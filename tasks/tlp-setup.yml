@@ -1,0 +1,12 @@
+- name: Install tlp
+  become: true
+  apt:
+    name: ["tlp", "tlp-rdw"]
+  tags: &tags_for_tlp_tasks ["install", "tlp"]
+
+- name: Enabling & Starting tlp
+  become: true
+  shell: |
+    systemctl enable tlp && \
+    systemctl start tlp
+  tags: *tags_for_tlp_tasks 

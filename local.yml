@@ -27,6 +27,7 @@
     - include: tasks/vlc-setup.yml
     - include: tasks/firewall-setup.yml
     - include: tasks/nala-setup.yml
+    - include: tasks/tlp-setup.yml
     - include: tasks/teams-setup.yml
     - include: tasks/git-setup.yml
     - include: tasks/zsh-setup.yml
