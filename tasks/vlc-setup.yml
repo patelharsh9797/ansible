@@ -1,0 +1,13 @@
+
+- name: Install VLC
+  become: true
+  apt:
+    name: vlc
+  tags: &tags_for_vlc_tasks ["install", "productivity", "vlc"]
+
+- name: Encoding Support For Media
+  become: true
+  apt:
+    name: ubuntu-restricted-extras
+  tags: *tags_for_vlc_tasks
+
