@@ -25,6 +25,7 @@
     - include: tasks/core-setup.yml
     - include: tasks/gnome-setup.yml
     - include: tasks/vlc-setup.yml
+    - include: tasks/firewall-setup.yml
     - include: tasks/git-setup.yml
     - include: tasks/zsh-setup.yml
     - include: tasks/bun-setup.yml

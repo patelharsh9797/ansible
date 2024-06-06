@@ -1,0 +1,21 @@
+- name: Install ufw Firewall
+  become: true
+  apt:
+    name: ufw
+  tags: &tags_for_firewall_tasks ["install", "firewall", "ufw"]
+
+- name: Enable ufw
+  shell: ufw enable
+  tags: *tags_for_firewall_tasks
+
+- name: GUFW - Visual Ufw
+  become: true
+  apt:
+    name: gufw
+  tags: *tags_for_firewall_tasks
+
+- name: ufw deny 22/tcp
+  become: true
+  shell: ufw deny 22/tcp
+  tags: *tags_for_firewall_tasks
+
