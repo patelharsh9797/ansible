@@ -1,4 +1,4 @@
-- name:
+- name: Ensure Unzip is installed
   stat:
     path: /user/bin/unzip
   register: unzip_stats
@@ -13,3 +13,4 @@
 - name: Install Bun
   shell: curl -fsSL https://bun.sh/install | bash
   tags: *tags_for_bun_tasks
+

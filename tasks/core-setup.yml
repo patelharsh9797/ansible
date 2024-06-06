@@ -1,7 +1,7 @@
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
   apt:
-    name: ["build-essential", "cmake", "pkg-config", "libpthread-stubs0-dev"]
+    name: ["build-essential", "git", "ripgrep", "fd", "g++", "cmake" ,"cmake", "pkg-config", "libpthread-stubs0-dev"]
   tags:
     - install
     - neovim
@@ -10,9 +10,8 @@
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
   apt:
-    name: [ "unzip", "libtool", "libtool-bin", "gettext"]
+    name: [ "unzip", "libtool", "libtool-bin", "gettext", "fzf", "xclip", "libgconf-2-4", "python3-gi", "gir1.2-gconf-2.0"]
   tags:
     - install
     - neovim
     - core
-d

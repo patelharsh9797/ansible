@@ -1,38 +1,61 @@
-- name: Install ZSH
-  apt: name=zsh
+- name: Install Zsh
+  become: true
+  apt:
+    name: zsh
   tags: &tags_for_zsh_tasks ["install", "productivity", "dotfiles", "zsh"]
 
-- name: Change shell to zsh
-  shell: chsh -s $(which zsh)
+- name: Change shell to Zsh for user
+  shell: chsh -s $(which zsh) "{{ username }}"
   tags: *tags_for_zsh_tasks
 
-- name: Check that the somefile.conf exists
+- name: Check if Oh My Zsh is installed
   stat:
-    path: /home/{{ username }}/.oh-my-zsh
+    path: ${HOME}/.oh-my-zsh
   register: oh_my_stats
+  become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
 
-- name: Oh-My-Zsh
-  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
-  tags: *tags_for_zsh_tasks
+- name: Install Oh My Zsh
+  shell: |
+    curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > /home/{{ username }}/.oh-my-installer && \
+    chmod +x ${HOME}/.oh-my-installer && \
+    /home/{{ username }}/.oh-my-installer
   when: oh_my_stats.stat.exists == False
-  become_user: "{ { username } }"
+  become: true
+  become_user: "{{ username }}"
+  tags: *tags_for_zsh_tasks
+
 
 - name: Install zsh-autosuggestions
-  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  become: true
+  become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
+
 
 - name: Install zsh-syntax-highlighting
-  shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  become: true
+  become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
+
 
 - name: Install fast-syntax-highlighting
-  shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+  shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+  become: true
+  become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
 
+
 - name: Install Zoxide
-  shell: |
-    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-    mv ~/.local/bin/zoxide /usr/local/bin/
+  shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  become: true
+  become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
-  become: yes
+
+
+- name: Moving Zoxide
+  shell: sudo mv ${HOME}/.local/bin/zoxide /usr/local/bin/
+  become: true
+  become_user: "{{ username }}"
+  tags: *tags_for_zsh_tasks
