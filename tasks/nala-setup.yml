@@ -1,0 +1,32 @@
+- name: Adding Nala Repo
+  become: true
+  shell: echo "deb [trusted=yes] https://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian.list
+  tags: &tags_for_nala_tasks ["install", "nala"]
+
+- name: Install Nala
+  become: true
+  apt:
+    update_cache: yes
+    name: nala
+    state: present
+  tags: *tags_for_nala_tasks
+
+- name: Nala Fetch
+  shell: nala fetch --auto
+  register: nala_fetch_result
+  tags: *tags_for_nala_tasks
+
+- name: Print nala fetch result
+  debug:
+    var: nala_fetch_result.stdout
+  tags: *tags_for_nala_tasks
+
+- name: Upgrade system using nala
+  shell: nala upgrade -y
+  register: nala_upgrade_result
+  tags: *tags_for_nala_tasks
+
+- name: Print nala upgrade result
+  debug:
+   var: nala_upgrade_result.stdout
+  tags: *tags_for_nala_tasks
