@@ -16,13 +16,12 @@
     - neovim
     - core
 
-- name: Install Gnome Extras
+- name: Install System Packages 3 (preload, bleachbit, stacer)
   become: true
   apt:
-    name: ["gnome-tweaks","gnome-shell-extensions"]
+    name: ["preload","bleachbit","stacer"]
   tags:
     - install
-    - neovim
     - core
 
 
