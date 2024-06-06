@@ -1,0 +1,10 @@
+- name: Install teams-for-linux
+  become: true
+  command: snap install teams-for-linux
+  tags: &tags_for_teams_tasks ["install", "teams"]
+
+- name: Adding teams-for-linux auto start
+  become: true
+  shell: cp files/teams-for-linux.desktop /home/{{username}}/.config/autostart/teams-for-linux.desktop
+  tags: *tags_for_teams_tasks
+
