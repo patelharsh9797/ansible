@@ -11,6 +11,7 @@
   become: true
 
 - name: Install Bun
+  become_user: "{{username}}"
   shell: curl -fsSL https://bun.sh/install | bash
   tags: *tags_for_bun_tasks
 

@@ -4,7 +4,13 @@
   tags: &tags_for_teams_tasks ["install", "teams"]
 
 - name: Adding teams-for-linux auto start
-  become: true
-  shell: cp files/teams-for-linux.desktop /home/{{username}}/.config/autostart/teams-for-linux.desktop
+  become_user: "{{username}}"
+  copy:
+    src: files/teams-for-linux.desktop
+    dest: ${HOME}/.config/autostart/teams-for-linux.desktop
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: "0755"
+  # shell: cp files/teams-for-linux.desktop /home/{{username}}/.config/autostart/teams-for-linux.desktop
   tags: *tags_for_teams_tasks
 

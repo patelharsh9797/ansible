@@ -1,6 +1,7 @@
 - hosts: localhost
   vars:
     username: "harsh"
+    nvm_dir: "{{ lookup('env', 'HOME') }}/.nvm"
     source_key: "./.ssh/id_rsa"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
     personal: "{{ lookup('env', 'HOME') }}/personal"
@@ -31,6 +32,7 @@
     - include: tasks/teams-setup.yml
     - include: tasks/git-setup.yml
     - include: tasks/zsh-setup.yml
+    - include: tasks/node-setup.yml
     - include: tasks/bun-setup.yml
 
     # - include: tasks/ssh.yml

@@ -20,13 +20,3 @@
   debug:
     var: nala_fetch_result.stdout
   tags: *tags_for_nala_tasks
-
-- name: Upgrade system using nala
-  shell: nala upgrade -y
-  register: nala_upgrade_result
-  tags: *tags_for_nala_tasks
-
-- name: Print nala upgrade result
-  debug:
-   var: nala_upgrade_result.stdout
-  tags: *tags_for_nala_tasks

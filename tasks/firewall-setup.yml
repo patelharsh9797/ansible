@@ -5,6 +5,7 @@
   tags: &tags_for_firewall_tasks ["install", "firewall", "ufw"]
 
 - name: Enable ufw
+  become: true
   shell: ufw enable
   tags: *tags_for_firewall_tasks
 
