@@ -3,6 +3,14 @@
   command: snap install teams-for-linux
   tags: &tags_for_teams_tasks ["install", "teams"]
 
+- name: Ensure autostart directory exists
+  file:
+    path: /home/{{ username }}/.config/autostart
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags: *tags_for_teams_tasks
+
 - name: Adding teams-for-linux auto start
   become_user: "{{username}}"
   copy:
@@ -11,6 +19,4 @@
     owner: "{{username}}"
     group: "{{username}}"
     mode: "0755"
-  # shell: cp files/teams-for-linux.desktop /home/{{username}}/.config/autostart/teams-for-linux.desktop
   tags: *tags_for_teams_tasks
-
