@@ -1,6 +1,6 @@
 - name: Install Zsh
   become: true
-  become_user: "{{username}}"
+  # become_user: "{{username}}"
   apt:
     name: zsh
   tags: &tags_for_zsh_tasks ["install", "productivity", "dotfiles", "zsh"]
@@ -27,13 +27,11 @@
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
 
-
 - name: Install zsh-autosuggestions
   shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   become: true
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
-
 
 - name: Install zsh-syntax-highlighting
   shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -41,13 +39,11 @@
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
 
-
 - name: Install fast-syntax-highlighting
   shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
   become: true
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
-
 
 - name: Install Zoxide
   shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
@@ -55,9 +51,20 @@
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks
 
-
 - name: Moving Zoxide
   shell: sudo mv ${HOME}/.local/bin/zoxide /usr/local/bin/
+  become: true
+  become_user: "{{ username }}"
+  tags: *tags_for_zsh_tasks
+
+- name: Downloading starship
+  shell: curl -L https://starship.rs/install.sh > ${HOME}/starship.sh
+  become: true
+  become_user: "{{ username }}"
+  tags: *tags_for_zsh_tasks
+
+- name: Installing starship
+  shell: sh ${HOME}/starship.sh -y
   become: true
   become_user: "{{ username }}"
   tags: *tags_for_zsh_tasks

@@ -1,3 +1,19 @@
+- name: Ensure .config directory exists
+  file:
+    path: /home/{{ username }}/.config
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags:
+    - dot_copy
+    - dotfiles
+    - zsh
+    - bash
+    - kitty
+    - nvim
+    - neovim
+    - lazyvim
+
 - name: .zshrc config
   become_user: "{{ username }}"
   copy:
@@ -6,6 +22,7 @@
     owner: "{{ username }}"
     group: "{{ username }}"
   tags:
+    - dot_copy
     - dotfiles
     - zsh
 
@@ -19,6 +36,7 @@
   tags:
     - dotfiles
     - bash
+    - dot_copy
 
 - name: Nvim config files
   become_user: "{{username}}"
@@ -32,17 +50,19 @@
     - nvim
     - neovim
     - lazyvim
+    - dot_copy
 
 - name: Kitty config files
   become_user: "{{username}}"
   copy:
-    src: files/.config/kitty
-    dest: $HOME/.config
+    src: files/.config/kitty/
+    dest: $HOME/.config/kitty
     owner: "{{username}}"
     group: "{{username}}"
   tags:
     - dotfiles
     - kitty
+    - dot_copy
 
 - name: starship.toml config
   become_user: "{{username}}"
@@ -54,3 +74,5 @@
   tags:
     - dotfiles
     - starship
+    - zsh
+    - dot_copy
