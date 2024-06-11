@@ -1,0 +1,75 @@
+- name: Ensure nvim directory exists
+  file:
+    path: "{{ nvim_dir }}"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags:
+    &tags_for_nvim_tasks [
+      "install",
+      "productivity",
+      "dotfiles",
+      "nvim",
+      "neovim",
+      "lazyvim",
+    ]
+
+- name: Check if Neovim is installed
+  stat:
+    path: "{{ nvim_bin }}"
+  register: nvim_bin_stat
+  tags: *tags_for_nvim_tasks
+
+- name: Check if Neovim tarball exists
+  stat:
+    path: "{{ nvim_tar }}"
+  register: nvim_tar_stat
+  tags: *tags_for_nvim_tasks
+
+- name: Download Neovim tarball
+  shell: curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+  args:
+    chdir: "/home/{{ username }}"
+  when: not nvim_bin_stat.stat.exists and not nvim_tar_stat.stat.exists
+  register: nvim_tar_download
+  become_user: "{{ username }}"
+  tags: *tags_for_nvim_tasks
+
+- name: Extract Neovim
+  shell: |
+    tar -C "$HOME/" -xzf "{{ nvim_tar }}" && \
+    mv $HOME/nvim-linux64/* {{ nvim_dir }}
+    rm -rf $HOME/nvim-linux64
+  when: nvim_tar_download is changed
+  become_user: "{{ username }}"
+  tags: *tags_for_nvim_tasks
+
+- name: Export Neovim Path
+  shell: export PATH=$PATH:{{ nvim_dir }}/bin
+  become_user: "{{ username }}"
+  tags: *tags_for_nvim_tasks
+
+- name: Remove Neovim tarball
+  file:
+    path: "{{ nvim_tar }}"
+    state: absent
+  when: nvim_tar_download is changed
+  become_user: "{{ username }}"
+  tags: *tags_for_nvim_tasks
+
+- name: Ensure ~/.config/nvim directory exists
+  file:
+    path: $HOME/.config/nvim
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags: *tags_for_nvim_tasks
+
+- name: Adding Nvim config files
+  become_user: "{{username}}"
+  copy:
+    src: files/.config/nvim
+    dest: $HOME/.config
+    owner: "{{username}}"
+    group: "{{username}}"
+  tags: *tags_for_nvim_tasks

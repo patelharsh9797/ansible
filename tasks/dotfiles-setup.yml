@@ -1,0 +1,56 @@
+- name: .zshrc config
+  become_user: "{{ username }}"
+  copy:
+    src: files/.zshrc
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags:
+    - dotfiles
+    - zsh
+
+- name: .bashrc config
+  become_user: "{{ username }}"
+  copy:
+    src: files/.bashrc
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  tags:
+    - dotfiles
+    - bash
+
+- name: Nvim config files
+  become_user: "{{username}}"
+  copy:
+    src: files/.config/nvim/
+    dest: $HOME/.config/nvim
+    owner: "{{username}}"
+    group: "{{username}}"
+  tags:
+    - dotfiles
+    - nvim
+    - neovim
+    - lazyvim
+
+- name: Kitty config files
+  become_user: "{{username}}"
+  copy:
+    src: files/.config/kitty
+    dest: $HOME/.config
+    owner: "{{username}}"
+    group: "{{username}}"
+  tags:
+    - dotfiles
+    - kitty
+
+- name: starship.toml config
+  become_user: "{{username}}"
+  copy:
+    src: files/.config/starship.toml
+    dest: $HOME/.config/starship.toml
+    owner: "{{username}}"
+    group: "{{username}}"
+  tags:
+    - dotfiles
+    - starship

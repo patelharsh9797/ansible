@@ -1,6 +1,9 @@
 - hosts: localhost
   vars:
     username: "harsh"
+    nvim_dir: "{{ lookup('env', 'HOME') }}/.nvim"
+    nvim_tar: "{{ lookup('env', 'HOME') }}/nvim-linux64.tar.gz"
+    nvim_bin: "{{ lookup('env', 'HOME') }}/.nvim/bin/nvim"
     nvm_dir: "{{ lookup('env', 'HOME') }}/.nvm"
     source_key: "./.ssh/id_rsa"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
@@ -34,6 +37,8 @@
     - include: tasks/zsh-setup.yml
     - include: tasks/node-setup.yml
     - include: tasks/bun-setup.yml
+    - include: tasks/nvim-setup.yml
+    - include: tasks/dotfiles-setup.yml
 
     # - include: tasks/ssh.yml
     # - include: tasks/git-setup.yml

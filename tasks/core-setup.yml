@@ -16,10 +16,10 @@
     - neovim
     - core
 
-- name: Install System Packages 3 (snapd, preload, bleachbit, stacer)
+- name: Install System Packages 3 (snapd, preload, bleachbit, stacer, exa)
   become: true
   apt:
-    name: ["snapd","preload","bleachbit","stacer"]
+    name: ["snapd","preload","bleachbit","stacer", "exa"]
   tags:
     - install
     - core
